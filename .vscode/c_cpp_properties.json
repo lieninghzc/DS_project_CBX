@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "MSPM0G3507 ARM GCC",
+            "compilerPath": "D:/Program Files/Arm/GNU Toolchain mingw-w64-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
+            "compileCommands": "${workspaceFolder}/build/MSPM0G3507-Debug/compile_commands.json",
+            "includePath": [
+                "${workspaceFolder}/Core/Inc",
+                "${workspaceFolder}/Core/Src",
+                "${workspaceFolder}/Drivers/RTT",
+                "${workspaceFolder}/mspm0-sdk/mspm0_sdk_2_11_00_07/source",
+                "${workspaceFolder}/mspm0-sdk/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include",
+                "D:/Program Files/Arm/GNU Toolchain mingw-w64-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/15.2.1/include",
+                "D:/Program Files/Arm/GNU Toolchain mingw-w64-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/15.2.1/include-fixed",
+                "D:/Program Files/Arm/GNU Toolchain mingw-w64-x86_64-arm-none-eabi/arm-none-eabi/include"
+            ],
+            "defines": [
+                "DeviceFamily_MSPM0G350X",
+                "__MSPM0G3507__",
+                "__GNUC__",
+                "__ARM_ARCH_6M__"
+            ],
+            "intelliSenseMode": "linux-gcc-arm",
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 4
+}

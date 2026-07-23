@@ -1,0 +1,67 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "MSPM0G3507-Debug",
+            "displayName": "MSPM0G3507 Debug",
+            "description": "MSPM0G3507 project in Debug mode",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "MSPM0G3507-Release",
+            "displayName": "MSPM0G3507 Release",
+            "description": "MSPM0G3507 project in Release mode",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "MSPM0G3507-RelWithDebInfo",
+            "displayName": "MSPM0G3507 RelWithDebInfo",
+            "description": "MSPM0G3507 project in RelWithDebInfo mode",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "MSPM0G3507-MinSizeRel",
+            "displayName": "MSPM0G3507 MinSizeRel",
+            "description": "MSPM0G3507 project in MinSizeRel mode",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "MSPM0G3507-Debug",
+            "configurePreset": "MSPM0G3507-Debug"
+        },
+        {
+            "name": "MSPM0G3507-Release",
+            "configurePreset": "MSPM0G3507-Release"
+        },
+        {
+            "name": "MSPM0G3507-RelWithDebInfo",
+            "configurePreset": "MSPM0G3507-RelWithDebInfo"
+        },
+        {
+            "name": "MSPM0G3507-MinSizeRel",
+            "configurePreset": "MSPM0G3507-MinSizeRel"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+device MSPM0G3507
+si SWD
+speed 4000
+connect
+h
+erase
+loadfile build/MSPM0G3507-Debug/mspm0g3507_app.hex
+r
+g
+q

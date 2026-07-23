@@ -97,13 +97,36 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 
 
 
+/* Defines for UART_0 */
+#define UART_0_INST                                                        UART0
+#define UART_0_INST_FREQUENCY                                           40000000
+#define UART_0_INST_IRQHandler                                  UART0_IRQHandler
+#define UART_0_INST_INT_IRQN                                      UART0_INT_IRQn
+#define GPIO_UART_0_RX_PORT                                                GPIOA
+#define GPIO_UART_0_TX_PORT                                                GPIOA
+#define GPIO_UART_0_RX_PIN                                        DL_GPIO_PIN_11
+#define GPIO_UART_0_TX_PIN                                        DL_GPIO_PIN_10
+#define GPIO_UART_0_IOMUX_RX                                     (IOMUX_PINCM22)
+#define GPIO_UART_0_IOMUX_TX                                     (IOMUX_PINCM21)
+#define GPIO_UART_0_IOMUX_RX_FUNC                      IOMUX_PINCM22_PF_UART0_RX
+#define GPIO_UART_0_IOMUX_TX_FUNC                      IOMUX_PINCM21_PF_UART0_TX
+#define UART_0_BAUD_RATE                                                (115200)
+#define UART_0_IBRD_40_MHZ_115200_BAUD                                      (21)
+#define UART_0_FBRD_40_MHZ_115200_BAUD                                      (45)
+
+
+
+
 
 /* Port definition for Pin Group GPIO_LEDS */
-#define GPIO_LEDS_PORT                                                   (GPIOB)
+#define GPIO_LEDS_PORT                                                   (GPIOA)
 
-/* Defines for USER_LED_1: GPIOB.22 with pinCMx 50 on package pin 21 */
-#define GPIO_LEDS_USER_LED_1_PIN                                (DL_GPIO_PIN_22)
-#define GPIO_LEDS_USER_LED_1_IOMUX                               (IOMUX_PINCM50)
+/* Defines for USER_LED_1: GPIOA.2 with pinCMx 7 on package pin 42 */
+#define GPIO_LEDS_USER_LED_1_PIN                                 (DL_GPIO_PIN_2)
+#define GPIO_LEDS_USER_LED_1_IOMUX                                (IOMUX_PINCM7)
+/* Defines for USER_LED_2: GPIOA.7 with pinCMx 14 on package pin 49 */
+#define GPIO_LEDS_USER_LED_2_PIN                                 (DL_GPIO_PIN_7)
+#define GPIO_LEDS_USER_LED_2_IOMUX                               (IOMUX_PINCM14)
 
 
 /* clang-format on */
@@ -115,6 +138,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 void SYSCFG_DL_TIMER_0_init(void);
+void SYSCFG_DL_UART_0_init(void);
 
 
 bool SYSCFG_DL_saveConfiguration(void);

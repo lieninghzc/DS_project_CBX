@@ -16,6 +16,7 @@ extern "C"
 #include "SEGGER_RTT.h"
 #include "xj.h"
 #include "Gyroscope.h"
+#include "BlueTooth.h"
 
 #ifdef __cplusplus
 }

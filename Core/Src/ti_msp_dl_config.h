@@ -104,13 +104,33 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 #define I2C_0_INST_INT_IRQN                                        I2C0_INT_IRQn
 #define I2C_0_BUS_SPEED_HZ                                                100000
 #define GPIO_I2C_0_SDA_PORT                                                GPIOA
-#define GPIO_I2C_0_SDA_PIN                                         DL_GPIO_PIN_0
-#define GPIO_I2C_0_IOMUX_SDA                                      (IOMUX_PINCM1)
-#define GPIO_I2C_0_IOMUX_SDA_FUNC                       IOMUX_PINCM1_PF_I2C0_SDA
+#define GPIO_I2C_0_SDA_PIN                                        DL_GPIO_PIN_10
+#define GPIO_I2C_0_IOMUX_SDA                                     (IOMUX_PINCM21)
+#define GPIO_I2C_0_IOMUX_SDA_FUNC                      IOMUX_PINCM21_PF_I2C0_SDA
 #define GPIO_I2C_0_SCL_PORT                                                GPIOA
-#define GPIO_I2C_0_SCL_PIN                                         DL_GPIO_PIN_1
-#define GPIO_I2C_0_IOMUX_SCL                                      (IOMUX_PINCM2)
-#define GPIO_I2C_0_IOMUX_SCL_FUNC                       IOMUX_PINCM2_PF_I2C0_SCL
+#define GPIO_I2C_0_SCL_PIN                                        DL_GPIO_PIN_11
+#define GPIO_I2C_0_IOMUX_SCL                                     (IOMUX_PINCM22)
+#define GPIO_I2C_0_IOMUX_SCL_FUNC                      IOMUX_PINCM22_PF_I2C0_SCL
+
+
+/* Defines for UART_0 */
+#define UART_0_INST                                                        UART0
+#define UART_0_INST_FREQUENCY                                           40000000
+#define UART_0_INST_IRQHandler                                  UART0_IRQHandler
+#define UART_0_INST_INT_IRQN                                      UART0_INT_IRQn
+#define GPIO_UART_0_RX_PORT                                                GPIOA
+#define GPIO_UART_0_TX_PORT                                                GPIOA
+#define GPIO_UART_0_RX_PIN                                         DL_GPIO_PIN_1
+#define GPIO_UART_0_TX_PIN                                         DL_GPIO_PIN_0
+#define GPIO_UART_0_IOMUX_RX                                      (IOMUX_PINCM2)
+#define GPIO_UART_0_IOMUX_TX                                      (IOMUX_PINCM1)
+#define GPIO_UART_0_IOMUX_RX_FUNC                       IOMUX_PINCM2_PF_UART0_RX
+#define GPIO_UART_0_IOMUX_TX_FUNC                       IOMUX_PINCM1_PF_UART0_TX
+#define UART_0_BAUD_RATE                                                  (9600)
+#define UART_0_IBRD_40_MHZ_9600_BAUD                                       (260)
+#define UART_0_FBRD_40_MHZ_9600_BAUD                                        (27)
+
+
 
 
 
@@ -135,6 +155,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 void SYSCFG_DL_TIMER_0_init(void);
 void SYSCFG_DL_I2C_0_init(void);
+void SYSCFG_DL_UART_0_init(void);
 
 
 bool SYSCFG_DL_saveConfiguration(void);

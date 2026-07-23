@@ -15,6 +15,7 @@ extern "C"
 #include "Delay.h"
 #include "SEGGER_RTT.h"
 #include "xj.h"
+#include "Gyroscope.h"
 
 #ifdef __cplusplus
 }

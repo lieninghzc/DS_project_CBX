@@ -34,9 +34,17 @@ int _fstat(int file, struct stat *st)
     return 0;
 }
 
+/* ── 最小堆 2KB（newlib printf/strtod 等需要 malloc） ── */
+static uint8_t _heap[2048];
+static uint8_t *_heap_end = _heap;
+
 void *_sbrk(int incr)
 {
-    (void)incr;
-    errno = ENOMEM;
-    return (void *)-1;
+    uint8_t *prev = _heap_end;
+    if (_heap_end + incr > _heap + sizeof(_heap)) {
+        errno = ENOMEM;
+        return (void *)-1;
+    }
+    _heap_end += incr;
+    return (void *)prev;
 }

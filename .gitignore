@@ -6,3 +6,21 @@ build/
 *.hex
 *.bin
 *.map
+
+# SysConfig 运行残留（但不包括 ti_msp_dl_config.c/h，它们需要提交）
+Core/Src/device*
+Core/Src/Event.dot
+
+# Ozone 工程文件（个人配置，不提交）
+*.jdebug
+*.jdebug.user
+
+# 旧工程/工具目录
+DS_CCS/
+ti/
+mspm0-sdk/
+Cmake/
+CMakeLists/
+src/
+commands.md
+systick_wrapper_gcc.S

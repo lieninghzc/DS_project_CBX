@@ -51,7 +51,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     /* Module-Specific Initializations*/
     SYSCFG_DL_SYSCTL_init();
     SYSCFG_DL_TIMER_0_init();
-    SYSCFG_DL_UART_0_init();
+    SYSCFG_DL_I2C_0_init();
 }
 
 
@@ -61,12 +61,12 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_reset(GPIOA);
     DL_GPIO_reset(GPIOB);
     DL_TimerG_reset(TIMER_0_INST);
-    DL_UART_Main_reset(UART_0_INST);
+    DL_I2C_reset(I2C_0_INST);
 
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
     DL_TimerG_enablePower(TIMER_0_INST);
-    DL_UART_Main_enablePower(UART_0_INST);
+    DL_I2C_enablePower(I2C_0_INST);
     delay_cycles(POWER_STARTUP_DELAY);
 }
 
@@ -76,10 +76,17 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralAnalogFunction(GPIO_HFXIN_IOMUX);
     DL_GPIO_initPeripheralAnalogFunction(GPIO_HFXOUT_IOMUX);
 
-    DL_GPIO_initPeripheralOutputFunction(
-        GPIO_UART_0_IOMUX_TX, GPIO_UART_0_IOMUX_TX_FUNC);
-    DL_GPIO_initPeripheralInputFunction(
-        GPIO_UART_0_IOMUX_RX, GPIO_UART_0_IOMUX_RX_FUNC);
+    
+	DL_GPIO_initPeripheralInputFunctionFeatures(
+		 GPIO_I2C_0_IOMUX_SDA, GPIO_I2C_0_IOMUX_SDA_FUNC,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+	DL_GPIO_initPeripheralInputFunctionFeatures(
+		 GPIO_I2C_0_IOMUX_SCL, GPIO_I2C_0_IOMUX_SCL_FUNC,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+    DL_GPIO_enableHiZ(GPIO_I2C_0_IOMUX_SDA);
+    DL_GPIO_enableHiZ(GPIO_I2C_0_IOMUX_SCL);
 
     DL_GPIO_initDigitalOutput(GPIO_LEDS_USER_LED_1_IOMUX);
 
@@ -241,35 +248,31 @@ SYSCONFIG_WEAK void SYSCFG_DL_TIMER_0_init(void) {
 }
 
 
-static const DL_UART_Main_ClockConfig gUART_0ClockConfig = {
-    .clockSel    = DL_UART_MAIN_CLOCK_BUSCLK,
-    .divideRatio = DL_UART_MAIN_CLOCK_DIVIDE_RATIO_1
+static const DL_I2C_ClockConfig gI2C_0ClockConfig = {
+    .clockSel = DL_I2C_CLOCK_BUSCLK,
+    .divideRatio = DL_I2C_CLOCK_DIVIDE_1,
 };
 
-static const DL_UART_Main_Config gUART_0Config = {
-    .mode        = DL_UART_MAIN_MODE_NORMAL,
-    .direction   = DL_UART_MAIN_DIRECTION_TX_RX,
-    .flowControl = DL_UART_MAIN_FLOW_CONTROL_NONE,
-    .parity      = DL_UART_MAIN_PARITY_NONE,
-    .wordLength  = DL_UART_MAIN_WORD_LENGTH_8_BITS,
-    .stopBits    = DL_UART_MAIN_STOP_BITS_ONE
-};
+SYSCONFIG_WEAK void SYSCFG_DL_I2C_0_init(void) {
 
-SYSCONFIG_WEAK void SYSCFG_DL_UART_0_init(void)
-{
-    DL_UART_Main_setClockConfig(UART_0_INST, (DL_UART_Main_ClockConfig *) &gUART_0ClockConfig);
+    DL_I2C_setClockConfig(I2C_0_INST,
+        (DL_I2C_ClockConfig *) &gI2C_0ClockConfig);
+    DL_I2C_setAnalogGlitchFilterPulseWidth(I2C_0_INST,
+        DL_I2C_ANALOG_GLITCH_FILTER_WIDTH_50NS);
+    DL_I2C_enableAnalogGlitchFilter(I2C_0_INST);
 
-    DL_UART_Main_init(UART_0_INST, (DL_UART_Main_Config *) &gUART_0Config);
-    /*
-     * Configure baud rate by setting oversampling and baud rate divisors.
-     *  Target baud rate: 115200
-     *  Actual baud rate: 115190.78
-     */
-    DL_UART_Main_setOversampling(UART_0_INST, DL_UART_OVERSAMPLING_RATE_16X);
-    DL_UART_Main_setBaudRateDivisor(UART_0_INST, UART_0_IBRD_40_MHZ_115200_BAUD, UART_0_FBRD_40_MHZ_115200_BAUD);
+    /* Configure Controller Mode */
+    DL_I2C_resetControllerTransfer(I2C_0_INST);
+    /* Set frequency to 100000 Hz*/
+    DL_I2C_setTimerPeriod(I2C_0_INST, 39);
+    DL_I2C_setControllerTXFIFOThreshold(I2C_0_INST, DL_I2C_TX_FIFO_LEVEL_EMPTY);
+    DL_I2C_setControllerRXFIFOThreshold(I2C_0_INST, DL_I2C_RX_FIFO_LEVEL_BYTES_1);
+    DL_I2C_enableControllerClockStretching(I2C_0_INST);
 
 
+    /* Enable module */
+    DL_I2C_enableController(I2C_0_INST);
 
-    DL_UART_Main_enable(UART_0_INST);
+
 }
 

@@ -2,7 +2,8 @@
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdio.h>
@@ -13,6 +14,7 @@ extern "C" {
 #include "ti_msp_dl_config.h"
 #include "Delay.h"
 #include "SEGGER_RTT.h"
+#include "xj.h"
 
 #ifdef __cplusplus
 }

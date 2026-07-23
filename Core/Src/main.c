@@ -5,6 +5,7 @@ int main (void)
     SYSCFG_DL_init();
     delay_init();
     SEGGER_RTT_Init();
+    XJ_I2C_Init();
 
     printf("\n=== MSPM0G3507 Startup ===\n");
     printf("print test\n");
@@ -17,9 +18,6 @@ int main (void)
         delay_ms(500);
         DL_GPIO_togglePins(GPIO_LEDS_PORT, GPIO_LEDS_USER_LED_1_PIN);
         DL_GPIO_togglePins(GPIO_LEDS_PORT, GPIO_LEDS_USER_LED_2_PIN);
-        if (count % 2 == 0)
-        {
-            printf("Hello World! Count: %lu\n", (unsigned long)++count);
-        }
+        XJ_PrintSensors();
     }
 }

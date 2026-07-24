@@ -17,6 +17,9 @@ extern "C"
 #include "xj.h"
 #include "Gyroscope.h"
 #include "BlueTooth.h"
+#include "Motor.h"
+#include "Encoder.h"
+#include "PID.h"
 
 #ifdef __cplusplus
 }

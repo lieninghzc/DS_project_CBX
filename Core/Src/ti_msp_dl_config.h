@@ -89,11 +89,49 @@ extern "C" {
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 
 
-/* Defines for TIMER_0 */
-#define TIMER_0_INST                                                    (TIMG12)
-#define TIMER_0_INST_IRQHandler                                TIMG12_IRQHandler
-#define TIMER_0_INST_INT_IRQN                                  (TIMG12_INT_IRQn)
-#define TIMER_0_INST_LOAD_VALUE                                         (79999U)
+/* Defines for PWM_A_B */
+#define PWM_A_B_INST                                                       TIMG6
+#define PWM_A_B_INST_IRQHandler                                 TIMG6_IRQHandler
+#define PWM_A_B_INST_INT_IRQN                                   (TIMG6_INT_IRQn)
+#define PWM_A_B_INST_CLK_FREQ                                           80000000
+/* GPIO defines for channel 0 */
+#define GPIO_PWM_A_B_C0_PORT                                               GPIOB
+#define GPIO_PWM_A_B_C0_PIN                                       DL_GPIO_PIN_26
+#define GPIO_PWM_A_B_C0_IOMUX                                    (IOMUX_PINCM57)
+#define GPIO_PWM_A_B_C0_IOMUX_FUNC                   IOMUX_PINCM57_PF_TIMG6_CCP0
+#define GPIO_PWM_A_B_C0_IDX                                  DL_TIMER_CC_0_INDEX
+/* GPIO defines for channel 1 */
+#define GPIO_PWM_A_B_C1_PORT                                               GPIOB
+#define GPIO_PWM_A_B_C1_PIN                                       DL_GPIO_PIN_27
+#define GPIO_PWM_A_B_C1_IOMUX                                    (IOMUX_PINCM58)
+#define GPIO_PWM_A_B_C1_IOMUX_FUNC                   IOMUX_PINCM58_PF_TIMG6_CCP1
+#define GPIO_PWM_A_B_C1_IDX                                  DL_TIMER_CC_1_INDEX
+
+
+
+/* Defines for CAP_A */
+#define CAP_A_INST                                                       (TIMG0)
+#define CAP_A_INST_IRQHandler                                   TIMG0_IRQHandler
+#define CAP_A_INST_INT_IRQN                                     (TIMG0_INT_IRQn)
+#define CAP_A_INST_LOAD_VALUE                                           (25007U)
+/* GPIO defines for channel 0 */
+#define GPIO_CAP_A_C0_PORT                                                 GPIOB
+#define GPIO_CAP_A_C0_PIN                                         DL_GPIO_PIN_10
+#define GPIO_CAP_A_C0_IOMUX                                      (IOMUX_PINCM27)
+#define GPIO_CAP_A_C0_IOMUX_FUNC                     IOMUX_PINCM27_PF_TIMG0_CCP0
+
+/* Defines for CAP_B */
+#define CAP_B_INST                                                      (TIMG12)
+#define CAP_B_INST_IRQHandler                                  TIMG12_IRQHandler
+#define CAP_B_INST_INT_IRQN                                    (TIMG12_INT_IRQn)
+#define CAP_B_INST_LOAD_VALUE                                           (50015U)
+/* GPIO defines for channel 0 */
+#define GPIO_CAP_B_C0_PORT                                                 GPIOA
+#define GPIO_CAP_B_C0_PIN                                         DL_GPIO_PIN_14
+#define GPIO_CAP_B_C0_IOMUX                                      (IOMUX_PINCM36)
+#define GPIO_CAP_B_C0_IOMUX_FUNC                    IOMUX_PINCM36_PF_TIMG12_CCP0
+
+
 
 
 
@@ -143,6 +181,24 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 /* Defines for USER_LED_2: GPIOA.7 with pinCMx 14 on package pin 49 */
 #define GPIO_LEDS_USER_LED_2_PIN                                 (DL_GPIO_PIN_7)
 #define GPIO_LEDS_USER_LED_2_IOMUX                               (IOMUX_PINCM14)
+/* Port definition for Pin Group A_DIRECT */
+#define A_DIRECT_PORT                                                    (GPIOA)
+
+/* Defines for AIN_1: GPIOA.4 with pinCMx 9 on package pin 44 */
+#define A_DIRECT_AIN_1_PIN                                       (DL_GPIO_PIN_4)
+#define A_DIRECT_AIN_1_IOMUX                                      (IOMUX_PINCM9)
+/* Defines for AIN_2: GPIOA.3 with pinCMx 8 on package pin 43 */
+#define A_DIRECT_AIN_2_PIN                                       (DL_GPIO_PIN_3)
+#define A_DIRECT_AIN_2_IOMUX                                      (IOMUX_PINCM8)
+/* Port definition for Pin Group B_DIRECT */
+#define B_DIRECT_PORT                                                    (GPIOB)
+
+/* Defines for BIN_1: GPIOB.21 with pinCMx 49 on package pin 20 */
+#define B_DIRECT_BIN_1_PIN                                      (DL_GPIO_PIN_21)
+#define B_DIRECT_BIN_1_IOMUX                                     (IOMUX_PINCM49)
+/* Defines for BIN_2: GPIOB.22 with pinCMx 50 on package pin 21 */
+#define B_DIRECT_BIN_2_PIN                                      (DL_GPIO_PIN_22)
+#define B_DIRECT_BIN_2_IOMUX                                     (IOMUX_PINCM50)
 
 
 /* clang-format on */
@@ -153,7 +209,9 @@ void SYSCFG_DL_GPIO_init(void);
 void SYSCFG_DL_SYSCTL_init(void);
 
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
-void SYSCFG_DL_TIMER_0_init(void);
+void SYSCFG_DL_PWM_A_B_init(void);
+void SYSCFG_DL_CAP_A_init(void);
+void SYSCFG_DL_CAP_B_init(void);
 void SYSCFG_DL_I2C_0_init(void);
 void SYSCFG_DL_UART_0_init(void);
 

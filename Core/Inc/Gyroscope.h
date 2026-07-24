@@ -86,10 +86,11 @@ bool MPU6050_ReadTemp (float* temp);
 /** 打印传感器数据（RTT 输出） */
 void MPU6050_Print (void);
 
-/** 陀螺仪校准：静置采样求零偏，之后所有读数自动减去偏移 */
+/** 校准：静置采样求零偏，之后所有读数自动减去偏移 */
 void MPU6050_Calibrate (void);
 
-/** 获取陀螺仪零偏值（°/s）*/
-void MPU6050_GetBias (float* gx_bias, float* gy_bias, float* gz_bias);
+/** 获取零偏值 */
+void MPU6050_GetBias (float* gx_b, float* gy_b, float* gz_b,
+                      float* ax_b, float* ay_b, float* az_b);
 
 #endif /* GYROSCOPE_H */

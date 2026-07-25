@@ -21,6 +21,7 @@ extern "C"
 #include "Encoder.h"
 #include "MaiXPro.h"
 #include "Engine.h"
+#include "Position.h"
 #include "PID.h"
 
 #ifdef __cplusplus

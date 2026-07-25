@@ -72,13 +72,17 @@ CAPTURE2.peripheral.$assign         = "TIMG12";
 CAPTURE2.peripheral.ccp0Pin.$assign = "PA14";
 CAPTURE2.ccp0PinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric7";
 
-GPIO1.$name                         = "GPIO_LEDS";
-GPIO1.port                          = "PORTA";
+GPIO1.$name                              = "GPIO_LEDS";
+GPIO1.port                               = "PORTA";
 GPIO1.associatedPins.create(2);
-GPIO1.associatedPins[0].$name       = "USER_LED_1";
-GPIO1.associatedPins[0].assignedPin = "2";
-GPIO1.associatedPins[1].$name       = "USER_LED_2";
-GPIO1.associatedPins[1].assignedPin = "7";
+GPIO1.associatedPins[0].$name            = "USER_LED_1";
+GPIO1.associatedPins[0].assignedPin      = "2";
+GPIO1.associatedPins[0].internalResistor = "PULL_UP";
+GPIO1.associatedPins[0].initialValue     = "SET";
+GPIO1.associatedPins[1].$name            = "USER_LED_2";
+GPIO1.associatedPins[1].assignedPin      = "7";
+GPIO1.associatedPins[1].internalResistor = "PULL_UP";
+GPIO1.associatedPins[1].initialValue     = "SET";
 
 GPIO2.$name                         = "A_DIRECT";
 GPIO2.port                          = "PORTA";

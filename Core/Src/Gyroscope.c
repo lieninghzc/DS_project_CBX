@@ -91,15 +91,18 @@ bool MPU6050_Init (void)
     }
     delay_ms(10); /* 晶振起振 + PLL 锁定时间 */
 
-    /* 验证芯片 —— WHO_AM_I 应返回 0x68 */
-    if (!XJ_I2C_ReadByte(MPU6050_ADDR, REG_WHO_AM_I, &id))
-    {
-        printf("MPU6050: WHO_AM_I read failed\n");
-        return false;
+    /* 验证芯片 —— 3 次重试 */
+    bool ok = false;
+    for (int retry = 0; retry < 3; retry++) {
+        if (XJ_I2C_ReadByte(MPU6050_ADDR, REG_WHO_AM_I, &id)) {
+            if (id == MPU6050_WHO_AM_I_VAL || id == MPU6500_WHO_AM_I_VAL) {
+                ok = true; break;
+            }
+        }
+        delay_ms(5);
     }
-    if (id != MPU6050_WHO_AM_I_VAL && id != MPU6500_WHO_AM_I_VAL)
-    {
-        printf("MPU6050: bad WHO_AM_I (got 0x%02X, expected 0x68 or 0x70)\n", id);
+    if (!ok) {
+        printf("MPU6050: WHO_AM_I failed (got 0x%02X)\n", id);
         return false;
     }
 

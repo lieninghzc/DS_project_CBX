@@ -336,7 +336,7 @@ void XJ_PrintSensors (void)
     printf("Sensors: 0x%02X [", v);
     for (int i = 7; i >= 0; i--)
     {
-        printf("%c", (v >> i) & 1 ? '0' : '1');
+        printf("%c", (v >> i) & 1 ? '1' : '0');
     }
     printf("]\n");
 }

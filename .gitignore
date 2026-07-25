@@ -24,3 +24,4 @@ CMakeLists/
 src/
 commands.md
 systick_wrapper_gcc.S
+.gen

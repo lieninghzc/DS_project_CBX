@@ -20,27 +20,31 @@ int main(void)
     printf("\n=== MSPM0G3507 Startup ===\n");
     printf("CPUCLK: %lu Hz\n\n", (unsigned long)CPUCLK_FREQ);
 
-    Encoder_Init();
+    Engine_Init();
+    Maix_Init();
+
+    /* 测试：直走 0.3 m/s */
+    Engine_GoStraight(0.3f);
 
     while (1) {
-        delay_ms(20);
+        delay_ms(1);
+
+        /* PID 更新（每 20ms） */
+        static uint32_t ctrl = 0;
+        if (++ctrl >= 20) { ctrl = 0; Engine_Update(); }
+
+        /* MaixCAM UART */
+        Maix_Poll();
 
         /* LED 500ms */
         static uint32_t blink = 0;
-        if (++blink >= 25) { blink = 0;
+        if (++blink >= 500) { blink = 0;
             DL_GPIO_togglePins(GPIO_LEDS_PORT,
                 GPIO_LEDS_USER_LED_1_PIN | GPIO_LEDS_USER_LED_2_PIN);
         }
 
-        /* 编码器每秒一次 */
+        /* 速度打印每秒一次 */
         static uint32_t sec = 0;
-        if (++sec >= 50) { sec = 0;
-            uint32_t pA = Encoder_GetPulse(ENC_A);
-            uint32_t pB = Encoder_GetPulse(ENC_B);
-            int rpmA = (int)Encoder_GetRPM(ENC_A);
-            int rpmB = (int)Encoder_GetRPM(ENC_B);
-            SEGGER_RTT_printf(0, "ENC A:%lu pulse %d RPM  B:%lu pulse %d RPM  run:%d %d\n",
-                pA, rpmA, pB, rpmB, Encoder_IsRunning(ENC_A), Encoder_IsRunning(ENC_B));
-        }
+        if (++sec >= 1000) { sec = 0; Engine_Print(); }
     }
 }

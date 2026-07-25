@@ -19,6 +19,8 @@ extern "C"
 #include "BlueTooth.h"
 #include "Motor.h"
 #include "Encoder.h"
+#include "MaiXPro.h"
+#include "Engine.h"
 #include "PID.h"
 
 #ifdef __cplusplus

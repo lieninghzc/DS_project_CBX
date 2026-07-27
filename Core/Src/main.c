@@ -104,11 +104,6 @@ int main (void)
 
             printf("ENC: A=%lu %.1fRPM B=%lu %.1fRPM\n---\n", Encoder_GetPulse(ENC_A), Encoder_GetRPM(ENC_A), Encoder_GetPulse(ENC_B), Encoder_GetRPM(ENC_B));
 
-            /* ── 相机数据发送 ── */
-            Maix_Printf("POS %.3f %.3f %.1f XJ %02X ENC %.1f %.1f\r\n",
-                x, y, yaw, XJ_ReadSensors(),
-                Encoder_GetRPM(ENC_A), Encoder_GetRPM(ENC_B));
-
             /* ── 蓝牙时间戳 ── */
             BT_Printf("tick:%lu\r\n", (unsigned long)timecheck++);
         }

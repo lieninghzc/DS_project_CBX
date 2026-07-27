@@ -56,21 +56,27 @@ pinFunction4.enable       = true;
 pinFunction4.HFXTStartup  = 10;
 pinFunction4.HFCLKMonitor = true;
 
-CAPTURE1.$name                            = "CAP_A";
-CAPTURE1.interrupts                       = ["CC0_DN"];
-CAPTURE1.timerPeriod                      = "625.2 us";
-CAPTURE1.peripheral.$assignAllowConflicts = "TIMG0";
-CAPTURE1.peripheral.ccp0Pin.$assign       = "PB10";
-CAPTURE1.ccp0PinConfig.$name              = "ti_driverlib_gpio_GPIOPinGeneric6";
+CAPTURE1.$name                              = "CAP_A";
+CAPTURE1.interrupts                         = ["CC0_DN"];
+CAPTURE1.timerPeriod                        = "625.2 us";
+CAPTURE1.peripheral.$assignAllowConflicts   = "TIMG0";
+CAPTURE1.peripheral.ccp0Pin.$assign         = "PB10";
+CAPTURE1.ccp0PinConfig.hideOutputInversion  = scripting.forceWrite(false);
+CAPTURE1.ccp0PinConfig.onlyInternalResistor = scripting.forceWrite(false);
+CAPTURE1.ccp0PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+CAPTURE1.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric6";
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
-CAPTURE2.interrupts                 = ["CC0_DN"];
-CAPTURE2.$name                      = "CAP_B";
-CAPTURE2.timerPeriod                = "625.2 us";
-CAPTURE2.peripheral.$assign         = "TIMG12";
-CAPTURE2.peripheral.ccp0Pin.$assign = "PA14";
-CAPTURE2.ccp0PinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric7";
+CAPTURE2.interrupts                         = ["CC0_DN"];
+CAPTURE2.$name                              = "CAP_B";
+CAPTURE2.timerPeriod                        = "625.2 us";
+CAPTURE2.peripheral.$assign                 = "TIMG12";
+CAPTURE2.peripheral.ccp0Pin.$assign         = "PA14";
+CAPTURE2.ccp0PinConfig.hideOutputInversion  = scripting.forceWrite(false);
+CAPTURE2.ccp0PinConfig.onlyInternalResistor = scripting.forceWrite(false);
+CAPTURE2.ccp0PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+CAPTURE2.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric7";
 
 GPIO1.$name                              = "GPIO_LEDS";
 GPIO1.port                               = "PORTA";
@@ -139,7 +145,8 @@ UART1.txPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric2";
 UART1.rxPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric3";
 
 UART2.$name                            = "UART_1_CAM";
-UART2.targetBaudRate                   = 115200;
+UART2.peripheral.rxPin.$assign         = "PA9";
+UART2.peripheral.txPin.$assign         = "PA8";
 UART2.txPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric8";
 UART2.txPinConfig.direction            = scripting.forceWrite("OUTPUT");
 UART2.txPinConfig.hideOutputInversion  = scripting.forceWrite(false);
@@ -150,8 +157,6 @@ UART2.rxPinConfig.hideOutputInversion  = scripting.forceWrite(false);
 UART2.rxPinConfig.onlyInternalResistor = scripting.forceWrite(false);
 UART2.rxPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 UART2.rxPinConfig.enableConfig         = true;
-UART2.peripheral.rxPin.$assign         = "PA9";
-UART2.peripheral.txPin.$assign         = "PA8";
 
 /**
  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future

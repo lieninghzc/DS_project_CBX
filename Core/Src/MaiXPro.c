@@ -13,6 +13,7 @@
 #include "main.h"
 #include "MaiXPro.h"
 #include <string.h>
+#include <stdarg.h>
 
 /* 接收缓冲 */
 #define RX_BUF_SIZE 128
@@ -120,6 +121,19 @@ void Maix_Process (void)
             g_rx_buf[g_rx_idx++] = ch;
         }
     }
+}
+
+/* ================================================================
+ * 格式化发送
+ * ================================================================ */
+void Maix_Printf(const char *fmt, ...)
+{
+    char buf[128];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+    Maix_Send(buf);
 }
 
 /* ================================================================

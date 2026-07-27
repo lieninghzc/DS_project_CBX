@@ -46,4 +46,7 @@ void Maix_Process(void);
 /** 非阻塞检查：有完整行则处理并返回 true */
 bool Maix_Poll(void);
 
+/** 格式化发送（类似 printf） */
+void Maix_Printf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+
 #endif

@@ -57,7 +57,7 @@ void BT_SendData(const uint8_t *data, uint16_t len)
 void BT_SendStr(const char *str)
 {
     while (*str) {
-        BT_SendByte((uint8_t)*str++);
+        DL_UART_Main_transmitDataBlocking(UART_0_INST, (uint8_t)*str++);
     }
 }
 

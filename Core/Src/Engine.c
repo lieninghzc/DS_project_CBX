@@ -39,6 +39,13 @@ void Engine_SetSpeed(float left_mps, float right_mps)
 void Engine_GoStraight(float mps) { Engine_SetSpeed(mps, mps); }
 void Engine_Turn(float l, float r) { Engine_SetSpeed(l, r); }
 
+/* 仅设目标, 不 Reset → 循迹连续调用不丢积分, Engine_Update自行取g_target传入PID */
+void Engine_SetTarget(float left_mps, float right_mps)
+{
+    g_targetL = left_mps;
+    g_targetR = right_mps;
+}
+
 void Engine_Stop(void)  { g_targetL=g_targetR=0; Motor_Set(MOTOR_A,MOTOR_STOP,0); Motor_Set(MOTOR_B,MOTOR_STOP,0); }
 void Engine_Brake(void) { g_targetL=g_targetR=0; Motor_Set(MOTOR_A,MOTOR_BRAKE,999); Motor_Set(MOTOR_B,MOTOR_BRAKE,999); }
 

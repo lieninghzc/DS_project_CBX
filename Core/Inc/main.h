@@ -25,6 +25,7 @@ extern "C"
 #include "OLED.h"
 #include "StateMachine.h"
 #include "PID.h"
+#include "xl.h"
 
 #ifdef __cplusplus
 }

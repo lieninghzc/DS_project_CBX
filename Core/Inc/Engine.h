@@ -19,8 +19,8 @@
 #include <stdbool.h>
 
 /* PID 参数 */
-#define ENGINE_KP 6000.0f
-#define ENGINE_KI 100.0f /* 积分补偿负载, 低增益防振荡 */
+#define ENGINE_KP 600.0f
+#define ENGINE_KI 100.0f
 #define ENGINE_KD 0.0f
 #define ENGINE_DT 0.02f
 #define ENGINE_OUT_MIN -999
@@ -41,6 +41,9 @@ void Engine_GoStraight (float mps);
 
 /** 差速转向（正=前进，负=后退，差值越大转弯越急） */
 void Engine_Turn (float left_mps, float right_mps);
+
+/** 仅设目标速度, 不 Reset PID — 循迹持续调用用 */
+void Engine_SetTarget (float left_mps, float right_mps);
 
 /** 空挡滑行 */
 void Engine_Stop (void);

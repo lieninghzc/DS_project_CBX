@@ -133,8 +133,13 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initPeripheralInputFunction(GPIO_CAP_A_C0_IOMUX,GPIO_CAP_A_C0_IOMUX_FUNC);
     DL_GPIO_initPeripheralInputFunction(GPIO_CAP_B_C0_IOMUX,GPIO_CAP_B_C0_IOMUX_FUNC);
-    DL_GPIO_initPeripheralInputFunction(GPIO_CAP_B_B_C1_IOMUX,GPIO_CAP_B_B_C1_IOMUX_FUNC);
-    DL_GPIO_initPeripheralInputFunction(GPIO_CAP_A_A_C1_IOMUX,GPIO_CAP_A_A_C1_IOMUX_FUNC);
+    /* B相仅用作GPIO电平判断方向, 不启用CCP1捕获中断 */
+    DL_GPIO_initDigitalInputFeatures(GPIO_CAP_A_A_C1_IOMUX,
+        DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+        DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+    DL_GPIO_initDigitalInputFeatures(GPIO_CAP_B_B_C1_IOMUX,
+        DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+        DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
     
 	DL_GPIO_initPeripheralInputFunctionFeatures(
@@ -374,7 +379,7 @@ static const DL_TimerG_CaptureConfig gCAP_ACaptureConfig = {
     .captureMode    = DL_TIMER_CAPTURE_MODE_EDGE_TIME,
     .period         = CAP_A_INST_LOAD_VALUE,
     .startTimer     = DL_TIMER_STOP,
-    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_EDGE,
+    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_RISING,
     .inputChan      = DL_TIMER_INPUT_CHAN_0,
     .inputInvMode   = DL_TIMER_CC_INPUT_INV_NOINVERT,
 };
@@ -386,8 +391,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_A_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_A_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_ACaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
-		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_A_INST);
 
@@ -412,7 +416,7 @@ static const DL_TimerG_CaptureConfig gCAP_BCaptureConfig = {
     .captureMode    = DL_TIMER_CAPTURE_MODE_EDGE_TIME,
     .period         = CAP_B_INST_LOAD_VALUE,
     .startTimer     = DL_TIMER_STOP,
-    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_EDGE,
+    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_RISING,
     .inputChan      = DL_TIMER_INPUT_CHAN_0,
     .inputInvMode   = DL_TIMER_CC_INPUT_INV_NOINVERT,
 };
@@ -424,8 +428,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_B_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_B_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_BCaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
-		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_B_INST);
 
@@ -450,7 +453,7 @@ static const DL_TimerG_CaptureConfig gCAP_B_BCaptureConfig = {
     .captureMode    = DL_TIMER_CAPTURE_MODE_EDGE_TIME,
     .period         = CAP_B_B_INST_LOAD_VALUE,
     .startTimer     = DL_TIMER_STOP,
-    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_EDGE,
+    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_RISING,
     .inputChan      = DL_TIMER_INPUT_CHAN_1,
     .inputInvMode   = DL_TIMER_CC_INPUT_INV_NOINVERT,
 };
@@ -462,8 +465,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_B_B_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_B_B_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_B_BCaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_B_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
-		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_B_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_B_B_INST);
 
@@ -488,7 +490,7 @@ static const DL_TimerG_CaptureConfig gCAP_A_ACaptureConfig = {
     .captureMode    = DL_TIMER_CAPTURE_MODE_EDGE_TIME,
     .period         = CAP_A_A_INST_LOAD_VALUE,
     .startTimer     = DL_TIMER_STOP,
-    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_EDGE,
+    .edgeCaptMode   = DL_TIMER_CAPTURE_EDGE_DETECTION_MODE_RISING,
     .inputChan      = DL_TIMER_INPUT_CHAN_1,
     .inputInvMode   = DL_TIMER_CC_INPUT_INV_NOINVERT,
 };
@@ -500,8 +502,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_A_A_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_A_A_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_A_ACaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_A_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
-		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_A_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_A_A_INST);
 

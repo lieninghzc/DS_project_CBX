@@ -19,17 +19,18 @@
 #include <stdbool.h>
 
 /* PID 参数 */
-#define ENGINE_KP 50.0f
-#define ENGINE_KI 400.0f
+#define ENGINE_KP 200.0f
+#define ENGINE_KI 0.0f           /* 先关积分, 纯P+KFF验证方向 */
 #define ENGINE_KD 0.0f
-#define ENGINE_DT 0.02f /* 20ms 控制周期 */
+#define ENGINE_DT 0.02f
 #define ENGINE_OUT_MIN -999
-#define ENGINE_OUT_MAX 999
+#define ENGINE_OUT_MAX  999
+#define ENGINE_IMAX     0.5f
 
-/* 前馈系数：duty = target_mps × K_FF */
-#define ENGINE_KFF 500.0f /* 100→0.14, 200→0.38, 300→0.63, 400→0.81, 500→0.95 */
+#define ENGINE_KFF 600.0f        /* 低速段实测: 100→0.14(714) 200→0.38(526) 300→0.63(476) */
 
-/** 初始化 Engine（Motor + Encoder + PID） */
+extern float g_targetL, g_targetR;  /* 当前目标速度 m/s */
+
 void Engine_Init (void);
 
 /** 设定左右轮目标线速度 (m/s)，自动 PID 闭环 */

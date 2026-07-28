@@ -22,8 +22,6 @@ void SYSCFG_DL_init (void)
     SYSCFG_DL_PWM_A_B_init();
     SYSCFG_DL_CAP_A_init();
     SYSCFG_DL_CAP_B_init();
-    SYSCFG_DL_CAP_B_B_init();
-    SYSCFG_DL_CAP_A_A_init();
     DL_TimerG_setCCPDirection(CAP_A_INST, DL_TIMER_CC0_INPUT | DL_TIMER_CC1_INPUT);
     DL_TimerG_setCCPDirection(CAP_B_INST, DL_TIMER_CC0_INPUT | DL_TIMER_CC1_INPUT);
     SYSCFG_DL_I2C_0_init();
@@ -37,15 +35,39 @@ int main (void)
     delay_init();
     SEGGER_RTT_Init();
 
-    Motor_Init();
-    Encoder_Init();
+    DL_GPIO_initDigitalOutput(GPIO_LEDS_USER_LED_1_IOMUX);
+    DL_GPIO_initDigitalOutput(GPIO_LEDS_USER_LED_2_IOMUX);
+    DL_GPIO_setPins(GPIO_LEDS_PORT, GPIO_LEDS_USER_LED_1_PIN | GPIO_LEDS_USER_LED_2_PIN);
+    DL_GPIO_enableOutput(GPIO_LEDS_PORT, GPIO_LEDS_USER_LED_1_PIN | GPIO_LEDS_USER_LED_2_PIN);
 
-    printf("pulseA cc1A pulseB cc1B\n");
+    Engine_Init();
 
-    while (1) {
-        delay_ms(200);
-        printf("%6ld %5lu  %6ld %5lu\n",
-            (long)Encoder_GetPulse(ENC_A), (unsigned long)g_diag_cc1A,
-            (long)Encoder_GetPulse(ENC_B), (unsigned long)g_diag_cc1B);
-    }
+    printf("\n===== Engine Test =====\n");
+
+    printf("--- FWD 0.3 ---\n");
+    Engine_GoStraight(0.3f);
+    for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+    Engine_Brake(); delay_ms(300);
+
+    printf("--- REV 0.3 ---\n");
+    Engine_GoStraight(-0.3f);
+    for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+    Engine_Brake(); delay_ms(300);
+
+    printf("--- Turn L=-0.3 R=+0.3 ---\n");
+    Engine_Turn(-0.3f, 0.3f);
+    for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+    Engine_Brake(); delay_ms(300);
+
+    printf("--- Turn L=+0.3 R=-0.3 ---\n");
+    Engine_Turn(0.3f, -0.3f);
+    for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+    Engine_Brake();
+
+    printf("===== Done =====\n");
+    while (1) { delay_ms(500); DL_GPIO_togglePins(GPIO_LEDS_PORT, GPIO_LEDS_USER_LED_1_PIN); }
 }

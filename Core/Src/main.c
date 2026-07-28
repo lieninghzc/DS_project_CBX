@@ -47,25 +47,25 @@ int main (void)
     printf("--- FWD 0.3 ---\n");
     Engine_GoStraight(0.3f);
     for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
-        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f d%+4d(%ld) R=%.2f d%+4d(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (int)(Motor_GetDir(MOTOR_A)==MOTOR_FWD?Motor_GetDuty(MOTOR_A):-(int)Motor_GetDuty(MOTOR_A)), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (int)(Motor_GetDir(MOTOR_B)==MOTOR_FWD?Motor_GetDuty(MOTOR_B):-(int)Motor_GetDuty(MOTOR_B)), (long)Encoder_GetPulse(ENC_B)); }
     Engine_Brake(); delay_ms(300);
 
     printf("--- REV 0.3 ---\n");
     Engine_GoStraight(-0.3f);
     for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
-        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f d%+4d(%ld) R=%.2f d%+4d(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (int)(Motor_GetDir(MOTOR_A)==MOTOR_FWD?Motor_GetDuty(MOTOR_A):-(int)Motor_GetDuty(MOTOR_A)), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (int)(Motor_GetDir(MOTOR_B)==MOTOR_FWD?Motor_GetDuty(MOTOR_B):-(int)Motor_GetDuty(MOTOR_B)), (long)Encoder_GetPulse(ENC_B)); }
     Engine_Brake(); delay_ms(300);
 
     printf("--- Turn L=-0.3 R=+0.3 ---\n");
     Engine_Turn(-0.3f, 0.3f);
     for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
-        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f d%+4d(%ld) R=%.2f d%+4d(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (int)(Motor_GetDir(MOTOR_A)==MOTOR_FWD?Motor_GetDuty(MOTOR_A):-(int)Motor_GetDuty(MOTOR_A)), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (int)(Motor_GetDir(MOTOR_B)==MOTOR_FWD?Motor_GetDuty(MOTOR_B):-(int)Motor_GetDuty(MOTOR_B)), (long)Encoder_GetPulse(ENC_B)); }
     Engine_Brake(); delay_ms(300);
 
     printf("--- Turn L=+0.3 R=-0.3 ---\n");
     Engine_Turn(0.3f, -0.3f);
     for (int i = 0; i < 100; i++) { delay_ms(20); Engine_Update();
-        if (i % 10 == 0) printf("  t=%.1f L=%.2f(%ld) R=%.2f(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (long)Encoder_GetPulse(ENC_B)); }
+        if (i % 10 == 0) printf("  t=%.1f L=%.2f d%+4d(%ld) R=%.2f d%+4d(%ld)\n", i*0.02f, (double)Engine_GetLeftSpeed(), (int)(Motor_GetDir(MOTOR_A)==MOTOR_FWD?Motor_GetDuty(MOTOR_A):-(int)Motor_GetDuty(MOTOR_A)), (long)Encoder_GetPulse(ENC_A), (double)Engine_GetRightSpeed(), (int)(Motor_GetDir(MOTOR_B)==MOTOR_FWD?Motor_GetDuty(MOTOR_B):-(int)Motor_GetDuty(MOTOR_B)), (long)Encoder_GetPulse(ENC_B)); }
     Engine_Brake();
 
     printf("===== Done =====\n");

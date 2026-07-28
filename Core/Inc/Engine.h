@@ -19,17 +19,17 @@
 #include <stdbool.h>
 
 /* PID 参数 */
-#define ENGINE_KP 200.0f
-#define ENGINE_KI 0.0f           /* 先关积分, 纯P+KFF验证方向 */
+#define ENGINE_KP 6000.0f
+#define ENGINE_KI 100.0f /* 积分补偿负载, 低增益防振荡 */
 #define ENGINE_KD 0.0f
 #define ENGINE_DT 0.02f
 #define ENGINE_OUT_MIN -999
-#define ENGINE_OUT_MAX  999
-#define ENGINE_IMAX     0.5f
+#define ENGINE_OUT_MAX 999
+#define ENGINE_IMAX 1.0f /* Ki*imax=100duty, 足以补偿摩擦 */
 
-#define ENGINE_KFF 600.0f        /* 低速段实测: 100→0.14(714) 200→0.38(526) 300→0.63(476) */
+#define ENGINE_KFF 600.0f /* 低速段实测: 100→0.14(714) 200→0.38(526) 300→0.63(476) */
 
-extern float g_targetL, g_targetR;  /* 当前目标速度 m/s */
+extern float g_targetL, g_targetR; /* 当前目标速度 m/s */
 
 void Engine_Init (void);
 

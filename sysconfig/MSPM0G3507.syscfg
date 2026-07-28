@@ -16,6 +16,8 @@
 const CAPTURE  = scripting.addModule("/ti/driverlib/CAPTURE", {}, false);
 const CAPTURE1 = CAPTURE.addInstance();
 const CAPTURE2 = CAPTURE.addInstance();
+const CAPTURE3 = CAPTURE.addInstance();
+const CAPTURE4 = CAPTURE.addInstance();
 const GPIO     = scripting.addModule("/ti/driverlib/GPIO", {}, false);
 const GPIO1    = GPIO.addInstance();
 const GPIO2    = GPIO.addInstance();
@@ -57,7 +59,7 @@ pinFunction4.HFXTStartup  = 10;
 pinFunction4.HFCLKMonitor = true;
 
 CAPTURE1.$name                              = "CAP_A";
-CAPTURE1.interrupts                         = ["CC0_DN"];
+CAPTURE1.interrupts                         = ["CC0_DN","CC1_DN"];
 CAPTURE1.timerPeriod                        = "625.2 us";
 CAPTURE1.peripheral.$assignAllowConflicts   = "TIMG0";
 CAPTURE1.peripheral.ccp0Pin.$assign         = "PB10";
@@ -68,15 +70,31 @@ CAPTURE1.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric6
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
-CAPTURE2.interrupts                         = ["CC0_DN"];
+CAPTURE2.interrupts                         = ["CC0_DN","CC1_DN"];
 CAPTURE2.$name                              = "CAP_B";
 CAPTURE2.timerPeriod                        = "625.2 us";
-CAPTURE2.peripheral.$assign                 = "TIMG12";
+CAPTURE2.peripheral.$assignAllowConflicts   = "TIMG12";
 CAPTURE2.peripheral.ccp0Pin.$assign         = "PA14";
 CAPTURE2.ccp0PinConfig.hideOutputInversion  = scripting.forceWrite(false);
 CAPTURE2.ccp0PinConfig.onlyInternalResistor = scripting.forceWrite(false);
 CAPTURE2.ccp0PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 CAPTURE2.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric7";
+
+CAPTURE3.interrupts                       = ["CC0_DN","CC1_DN"];
+CAPTURE3.timerPeriod                      = "625.2 us";
+CAPTURE3.$name                            = "CAP_B_B";
+CAPTURE3.ccIndex                          = 1;
+CAPTURE3.peripheral.$assignAllowConflicts = "TIMG12";
+CAPTURE3.peripheral.ccp1Pin.$assign       = "PA31";
+CAPTURE3.ccp1PinConfig.$name              = "ti_driverlib_gpio_GPIOPinGeneric10";
+
+CAPTURE4.interrupts                       = ["CC0_DN","CC1_DN"];
+CAPTURE4.timerPeriod                      = "625.2 us";
+CAPTURE4.$name                            = "CAP_A_A";
+CAPTURE4.ccIndex                          = 1;
+CAPTURE4.peripheral.$assignAllowConflicts = "TIMG0";
+CAPTURE4.peripheral.ccp1Pin.$assign       = "PB11";
+CAPTURE4.ccp1PinConfig.$name              = "ti_driverlib_gpio_GPIOPinGeneric11";
 
 GPIO1.$name                              = "GPIO_LEDS";
 GPIO1.port                               = "PORTA";

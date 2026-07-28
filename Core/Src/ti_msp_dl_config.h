@@ -131,6 +131,28 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 #define GPIO_CAP_B_C0_IOMUX                                      (IOMUX_PINCM36)
 #define GPIO_CAP_B_C0_IOMUX_FUNC                    IOMUX_PINCM36_PF_TIMG12_CCP0
 
+/* Defines for CAP_B_B */
+#define CAP_B_B_INST                                                    (TIMG12)
+#define CAP_B_B_INST_IRQHandler                                TIMG12_IRQHandler
+#define CAP_B_B_INST_INT_IRQN                                  (TIMG12_INT_IRQn)
+#define CAP_B_B_INST_LOAD_VALUE                                         (50015U)
+/* GPIO defines for channel 1 */
+#define GPIO_CAP_B_B_C1_PORT                                               GPIOA
+#define GPIO_CAP_B_B_C1_PIN                                       DL_GPIO_PIN_31
+#define GPIO_CAP_B_B_C1_IOMUX                                     (IOMUX_PINCM6)
+#define GPIO_CAP_B_B_C1_IOMUX_FUNC                   IOMUX_PINCM6_PF_TIMG12_CCP1
+
+/* Defines for CAP_A_A */
+#define CAP_A_A_INST                                                     (TIMG0)
+#define CAP_A_A_INST_IRQHandler                                 TIMG0_IRQHandler
+#define CAP_A_A_INST_INT_IRQN                                   (TIMG0_INT_IRQn)
+#define CAP_A_A_INST_LOAD_VALUE                                         (25007U)
+/* GPIO defines for channel 1 */
+#define GPIO_CAP_A_A_C1_PORT                                               GPIOB
+#define GPIO_CAP_A_A_C1_PIN                                       DL_GPIO_PIN_11
+#define GPIO_CAP_A_A_C1_IOMUX                                    (IOMUX_PINCM28)
+#define GPIO_CAP_A_A_C1_IOMUX_FUNC                   IOMUX_PINCM28_PF_TIMG0_CCP1
+
 
 
 
@@ -228,6 +250,8 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 void SYSCFG_DL_PWM_A_B_init(void);
 void SYSCFG_DL_CAP_A_init(void);
 void SYSCFG_DL_CAP_B_init(void);
+void SYSCFG_DL_CAP_B_B_init(void);
+void SYSCFG_DL_CAP_A_A_init(void);
 void SYSCFG_DL_I2C_0_init(void);
 void SYSCFG_DL_UART_0_init(void);
 void SYSCFG_DL_UART_1_CAM_init(void);

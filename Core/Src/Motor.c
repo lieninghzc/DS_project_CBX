@@ -14,6 +14,7 @@
 
 /* PWM 占空比范围（SysConfig 配的周期=1000） */
 #define PWM_MAX  999U
+#define MOTOR_A_INVERT  1  /* A 电机接线反相，FWD↔REV 对调 */
 
 static uint16_t   g_duty[2]   = {0, 0};
 static Motor_Dir  g_dir[2]    = {MOTOR_STOP, MOTOR_STOP};
@@ -21,8 +22,8 @@ static Motor_Dir  g_dir[2]    = {MOTOR_STOP, MOTOR_STOP};
 void Motor_Init(void)
 {
     /* 初始占空比 0 */
-    DL_TimerG_setCaptureCompareValue(PWM_A_B_INST, 0, DL_TIMERG_CAPTURE_COMPARE_0_INDEX);
-    DL_TimerG_setCaptureCompareValue(PWM_A_B_INST, 0, DL_TIMERG_CAPTURE_COMPARE_1_INDEX);
+    DL_TimerG_setCaptureCompareValue(PWM_A_B_INST, 1, DL_TIMERG_CAPTURE_COMPARE_0_INDEX);
+    DL_TimerG_setCaptureCompareValue(PWM_A_B_INST, 1, DL_TIMERG_CAPTURE_COMPARE_1_INDEX);
 
     /* 方向：空挡 */
     Motor_SetDir(MOTOR_A, MOTOR_STOP);
@@ -34,11 +35,15 @@ void Motor_Init(void)
 void Motor_SetDuty(Motor_ID id, uint16_t duty)
 {
     if (duty > PWM_MAX) duty = PWM_MAX;
+    if (duty == 0) duty = 1;   /* duty=0 时 PWM 匹配异常导致满速，钳到 1 */
     g_duty[id] = duty;
+
+    /* PWM 反相: CCR=0→100%占空比, 需取反 */
+    uint16_t ccr = PWM_MAX - duty;
 
     uint32_t idx = (id == MOTOR_A) ? DL_TIMERG_CAPTURE_COMPARE_0_INDEX
                                    : DL_TIMERG_CAPTURE_COMPARE_1_INDEX;
-    DL_TimerG_setCaptureCompareValue(PWM_A_B_INST, duty, idx);
+    DL_TimerG_setCaptureCompareValue(PWM_A_B_INST, ccr, idx);
 }
 
 void Motor_SetDir(Motor_ID id, Motor_Dir dir)
@@ -51,6 +56,10 @@ void Motor_SetDir(Motor_ID id, Motor_Dir dir)
         port = A_DIRECT_PORT;
         p1   = A_DIRECT_AIN_1_PIN;
         p2   = A_DIRECT_AIN_2_PIN;
+#if MOTOR_A_INVERT
+        if (dir == MOTOR_FWD) dir = MOTOR_REV;      /* A 电机接线反相 */
+        else if (dir == MOTOR_REV) dir = MOTOR_FWD;
+#endif
     } else {
         port = B_DIRECT_PORT;
         p1   = B_DIRECT_BIN_1_PIN;

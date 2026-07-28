@@ -93,15 +93,20 @@ bool MPU6050_Init (void)
 
     /* 验证芯片 —— 3 次重试 */
     bool ok = false;
-    for (int retry = 0; retry < 3; retry++) {
-        if (XJ_I2C_ReadByte(MPU6050_ADDR, REG_WHO_AM_I, &id)) {
-            if (id == MPU6050_WHO_AM_I_VAL || id == MPU6500_WHO_AM_I_VAL) {
-                ok = true; break;
+    for (int retry = 0; retry < 3; retry++)
+    {
+        if (XJ_I2C_ReadByte(MPU6050_ADDR, REG_WHO_AM_I, &id))
+        {
+            if (id == MPU6050_WHO_AM_I_VAL || id == MPU6500_WHO_AM_I_VAL)
+            {
+                ok = true;
+                break;
             }
         }
         delay_ms(5);
     }
-    if (!ok) {
+    if (!ok)
+    {
         printf("MPU6050: WHO_AM_I failed (got 0x%02X)\n", id);
         return false;
     }
@@ -112,6 +117,8 @@ bool MPU6050_Init (void)
     /* 默认量程 */
     MPU6050_SetGyroRange(GYRO_FS_250);
     MPU6050_SetAccelRange(ACCEL_FS_2G);
+
+    MPU6050_Calibrate(); /* 自动计算零偏值 */
 
     /* init OK */
     return true;
@@ -305,11 +312,14 @@ void MPU6050_Calibrate (void)
     printf("MPU6050: gyro bias=[%+.1f,%+.1f,%+.1f]d/s  accel bias=[%+.2f,%+.2f,%+.2f]g\n", g_gx_bias, g_gy_bias, g_gz_bias, g_ax_bias, g_ay_bias, g_az_bias);
 }
 
-void MPU6050_GetBias (float* gx_b, float* gy_b, float* gz_b,
-                      float* ax_b, float* ay_b, float* az_b)
+void MPU6050_GetBias (float* gx_b, float* gy_b, float* gz_b, float* ax_b, float* ay_b, float* az_b)
 {
-    *gx_b = g_gx_bias; *gy_b = g_gy_bias; *gz_b = g_gz_bias;
-    *ax_b = g_ax_bias; *ay_b = g_ay_bias; *az_b = g_az_bias;
+    *gx_b = g_gx_bias;
+    *gy_b = g_gy_bias;
+    *gz_b = g_gz_bias;
+    *ax_b = g_ax_bias;
+    *ay_b = g_ay_bias;
+    *az_b = g_az_bias;
 }
 
 /* MPU6050_Read 里自动减去零偏 */

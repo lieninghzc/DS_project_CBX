@@ -53,9 +53,13 @@ int main (void)
     delay_ms(1000);
     Engine_Brake();*/
 
+    static uint32_t g_next = 0;
     while (1)
-    {
-        SM_Run();
-        delay_ms(20);
+    {  //
+        if (g_msTick >= g_next)
+        {
+            g_next = g_msTick + 20;
+            SM_Run();
+        }
     }
 }

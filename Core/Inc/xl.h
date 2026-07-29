@@ -15,5 +15,7 @@ bool XL_IsLost(void);
 bool XL_IsSeeking(void);       /* 旋转寻线中 → SM 1ms加速 */
 bool XL_IsOnLine(void);
 int8_t XL_LastSide(void);
+uint8_t XL_GetSensors(void);
+int XL_GetState(void);     /* 0=FOLLOW 1=SEEK 2=LOST */
 
 #endif

@@ -107,6 +107,24 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 #define GPIO_PWM_A_B_C1_IOMUX_FUNC                   IOMUX_PINCM58_PF_TIMG6_CCP1
 #define GPIO_PWM_A_B_C1_IDX                                  DL_TIMER_CC_1_INDEX
 
+/* Defines for PWM_0 */
+#define PWM_0_INST                                                         TIMA0
+#define PWM_0_INST_IRQHandler                                   TIMA0_IRQHandler
+#define PWM_0_INST_INT_IRQN                                     (TIMA0_INT_IRQn)
+#define PWM_0_INST_CLK_FREQ                                               100000
+/* GPIO defines for channel 0 */
+#define GPIO_PWM_0_C0_PORT                                                 GPIOB
+#define GPIO_PWM_0_C0_PIN                                          DL_GPIO_PIN_8
+#define GPIO_PWM_0_C0_IOMUX                                      (IOMUX_PINCM25)
+#define GPIO_PWM_0_C0_IOMUX_FUNC                     IOMUX_PINCM25_PF_TIMA0_CCP0
+#define GPIO_PWM_0_C0_IDX                                    DL_TIMER_CC_0_INDEX
+/* GPIO defines for channel 1 */
+#define GPIO_PWM_0_C1_PORT                                                 GPIOA
+#define GPIO_PWM_0_C1_PIN                                         DL_GPIO_PIN_22
+#define GPIO_PWM_0_C1_IOMUX                                      (IOMUX_PINCM47)
+#define GPIO_PWM_0_C1_IOMUX_FUNC                     IOMUX_PINCM47_PF_TIMA0_CCP1
+#define GPIO_PWM_0_C1_IDX                                    DL_TIMER_CC_1_INDEX
+
 
 
 /* Defines for CAP_A */
@@ -248,6 +266,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 void SYSCFG_DL_PWM_A_B_init(void);
+void SYSCFG_DL_PWM_0_init(void);
 void SYSCFG_DL_CAP_A_init(void);
 void SYSCFG_DL_CAP_B_init(void);
 void SYSCFG_DL_CAP_B_B_init(void);

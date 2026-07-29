@@ -41,6 +41,7 @@
 #include "ti_msp_dl_config.h"
 
 DL_TimerG_backupConfig gPWM_A_BBackup;
+DL_TimerA_backupConfig gPWM_0Backup;
 
 /*
  *  ======== SYSCFG_DL_init ========
@@ -53,6 +54,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     /* Module-Specific Initializations*/
     SYSCFG_DL_SYSCTL_init();
     SYSCFG_DL_PWM_A_B_init();
+    SYSCFG_DL_PWM_0_init();
     SYSCFG_DL_CAP_A_init();
     SYSCFG_DL_CAP_B_init();
     SYSCFG_DL_CAP_B_B_init();
@@ -62,6 +64,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_UART_1_CAM_init();
     /* Ensure backup structures have no valid state */
 	gPWM_A_BBackup.backupRdy 	= false;
+	gPWM_0Backup.backupRdy 	= false;
 
 
 
@@ -75,6 +78,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_saveConfiguration(void)
     bool retStatus = true;
 
 	retStatus &= DL_TimerG_saveConfiguration(PWM_A_B_INST, &gPWM_A_BBackup);
+	retStatus &= DL_TimerA_saveConfiguration(PWM_0_INST, &gPWM_0Backup);
 
     return retStatus;
 }
@@ -85,6 +89,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_restoreConfiguration(void)
     bool retStatus = true;
 
 	retStatus &= DL_TimerG_restoreConfiguration(PWM_A_B_INST, &gPWM_A_BBackup, false);
+	retStatus &= DL_TimerA_restoreConfiguration(PWM_0_INST, &gPWM_0Backup, false);
 
     return retStatus;
 }
@@ -94,6 +99,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_reset(GPIOA);
     DL_GPIO_reset(GPIOB);
     DL_TimerG_reset(PWM_A_B_INST);
+    DL_TimerA_reset(PWM_0_INST);
     DL_TimerG_reset(CAP_A_INST);
     DL_TimerG_reset(CAP_B_INST);
     DL_TimerG_reset(CAP_B_B_INST);
@@ -105,6 +111,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
     DL_TimerG_enablePower(PWM_A_B_INST);
+    DL_TimerA_enablePower(PWM_0_INST);
     DL_TimerG_enablePower(CAP_A_INST);
     DL_TimerG_enablePower(CAP_B_INST);
     DL_TimerG_enablePower(CAP_B_B_INST);
@@ -130,16 +137,15 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		 GPIO_PWM_A_B_C0_IOMUX, GPIO_PWM_A_B_C0_IOMUX_FUNC);
 	DL_GPIO_initPeripheralOutputFunction(
 		 GPIO_PWM_A_B_C1_IOMUX, GPIO_PWM_A_B_C1_IOMUX_FUNC);
+    DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_0_C0_IOMUX,GPIO_PWM_0_C0_IOMUX_FUNC);
+    DL_GPIO_enableOutput(GPIO_PWM_0_C0_PORT, GPIO_PWM_0_C0_PIN);
+    DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_0_C1_IOMUX,GPIO_PWM_0_C1_IOMUX_FUNC);
+    DL_GPIO_enableOutput(GPIO_PWM_0_C1_PORT, GPIO_PWM_0_C1_PIN);
 
     DL_GPIO_initPeripheralInputFunction(GPIO_CAP_A_C0_IOMUX,GPIO_CAP_A_C0_IOMUX_FUNC);
     DL_GPIO_initPeripheralInputFunction(GPIO_CAP_B_C0_IOMUX,GPIO_CAP_B_C0_IOMUX_FUNC);
-    /* B相仅用作GPIO电平判断方向, 不启用CCP1捕获中断 */
-    DL_GPIO_initDigitalInputFeatures(GPIO_CAP_A_A_C1_IOMUX,
-        DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
-        DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
-    DL_GPIO_initDigitalInputFeatures(GPIO_CAP_B_B_C1_IOMUX,
-        DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
-        DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+    DL_GPIO_initPeripheralInputFunction(GPIO_CAP_B_B_C1_IOMUX,GPIO_CAP_B_B_C1_IOMUX_FUNC);
+    DL_GPIO_initPeripheralInputFunction(GPIO_CAP_A_A_C1_IOMUX,GPIO_CAP_A_A_C1_IOMUX_FUNC);
 
     
 	DL_GPIO_initPeripheralInputFunctionFeatures(
@@ -357,6 +363,57 @@ SYSCONFIG_WEAK void SYSCFG_DL_PWM_A_B_init(void) {
 
 
 }
+/*
+ * Timer clock configuration to be sourced by  / 8 (10000000 Hz)
+ * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
+ *   100000 Hz = 10000000 Hz / (8 * (99 + 1))
+ */
+static const DL_TimerA_ClockConfig gPWM_0ClockConfig = {
+    .clockSel = DL_TIMER_CLOCK_BUSCLK,
+    .divideRatio = DL_TIMER_CLOCK_DIVIDE_8,
+    .prescale = 99U
+};
+
+static const DL_TimerA_PWMConfig gPWM_0Config = {
+    .pwmMode = DL_TIMER_PWM_MODE_EDGE_ALIGN,
+    .period = 2000,
+    .isTimerWithFourCC = true,
+    .startTimer = DL_TIMER_STOP,
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_PWM_0_init(void) {
+
+    DL_TimerA_setClockConfig(
+        PWM_0_INST, (DL_TimerA_ClockConfig *) &gPWM_0ClockConfig);
+
+    DL_TimerA_initPWMMode(
+        PWM_0_INST, (DL_TimerA_PWMConfig *) &gPWM_0Config);
+
+    // Set Counter control to the smallest CC index being used
+    DL_TimerA_setCounterControl(PWM_0_INST,DL_TIMER_CZC_CCCTL0_ZCOND,DL_TIMER_CAC_CCCTL0_ACOND,DL_TIMER_CLC_CCCTL0_LCOND);
+
+    DL_TimerA_setCaptureCompareOutCtl(PWM_0_INST, DL_TIMER_CC_OCTL_INIT_VAL_LOW,
+		DL_TIMER_CC_OCTL_INV_OUT_DISABLED, DL_TIMER_CC_OCTL_SRC_FUNCVAL,
+		DL_TIMERA_CAPTURE_COMPARE_0_INDEX);
+
+    DL_TimerA_setCaptCompUpdateMethod(PWM_0_INST, DL_TIMER_CC_UPDATE_METHOD_IMMEDIATE, DL_TIMERA_CAPTURE_COMPARE_0_INDEX);
+    DL_TimerA_setCaptureCompareValue(PWM_0_INST, 2000, DL_TIMER_CC_0_INDEX);
+
+    DL_TimerA_setCaptureCompareOutCtl(PWM_0_INST, DL_TIMER_CC_OCTL_INIT_VAL_LOW,
+		DL_TIMER_CC_OCTL_INV_OUT_DISABLED, DL_TIMER_CC_OCTL_SRC_FUNCVAL,
+		DL_TIMERA_CAPTURE_COMPARE_1_INDEX);
+
+    DL_TimerA_setCaptCompUpdateMethod(PWM_0_INST, DL_TIMER_CC_UPDATE_METHOD_IMMEDIATE, DL_TIMERA_CAPTURE_COMPARE_1_INDEX);
+    DL_TimerA_setCaptureCompareValue(PWM_0_INST, 2000, DL_TIMER_CC_1_INDEX);
+
+    DL_TimerA_enableClock(PWM_0_INST);
+
+
+    
+    DL_TimerA_setCCPDirection(PWM_0_INST , DL_TIMER_CC0_OUTPUT | DL_TIMER_CC1_OUTPUT );
+
+
+}
 
 
 
@@ -391,7 +448,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_A_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_A_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_ACaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
+		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_A_INST);
 
@@ -428,7 +486,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_B_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_B_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_BCaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
+		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_B_INST);
 
@@ -465,7 +524,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_B_B_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_B_B_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_B_BCaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_B_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_B_B_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
+		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_B_B_INST);
 
@@ -502,7 +562,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_CAP_A_A_init(void) {
 
     DL_TimerG_initCaptureMode(CAP_A_A_INST,
         (DL_TimerG_CaptureConfig *) &gCAP_A_ACaptureConfig);
-    DL_TimerG_enableInterrupt(CAP_A_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT);
+    DL_TimerG_enableInterrupt(CAP_A_A_INST , DL_TIMERG_INTERRUPT_CC0_DN_EVENT |
+		DL_TIMERG_INTERRUPT_CC1_DN_EVENT);
 
     DL_TimerG_enableClock(CAP_A_A_INST);
 

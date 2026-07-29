@@ -50,14 +50,14 @@ void Engine_Stop(void)  { g_targetL=g_targetR=0; Motor_Set(MOTOR_A,MOTOR_STOP,0)
 void Engine_Brake(void) { g_targetL=g_targetR=0; Motor_Set(MOTOR_A,MOTOR_BRAKE,999); Motor_Set(MOTOR_B,MOTOR_BRAKE,999); }
 
 float Engine_GetLeftSpeed(void)  { return Encoder_GetMPS(ENC_A); }
-float Engine_GetRightSpeed(void) { return Encoder_GetMPS(ENC_B); }
+float Engine_GetRightSpeed(void) { return -Encoder_GetMPS(ENC_B); }
 
 void Engine_Update(void)
 {
     if (g_targetL == 0 && g_targetR == 0) return;
 
     float spdL = Encoder_GetMPS(ENC_A);
-    float spdR = Encoder_GetMPS(ENC_B);
+    float spdR = -Encoder_GetMPS(ENC_B);
 
     float ffL   = g_targetL * ENGINE_KFF;
     float pidL  = PID_Compute(&g_pidL, g_targetL, spdL);

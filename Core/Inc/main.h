@@ -22,10 +22,14 @@ extern "C"
 #include "MaiXPro.h"
 #include "Engine.h"
 #include "Position.h"
+#include "OLED.h"
 #include "StateMachine.h"
 #include "PID.h"
 #include "xl.h"
 #include "Servo.h"
+#include "Servo_PID.h"
+#include "Servo_180.h"
+#include "menu.h"
 
 #ifdef __cplusplus
 }

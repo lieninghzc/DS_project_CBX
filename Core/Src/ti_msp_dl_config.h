@@ -107,23 +107,17 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 #define GPIO_PWM_A_B_C1_IOMUX_FUNC                   IOMUX_PINCM58_PF_TIMG6_CCP1
 #define GPIO_PWM_A_B_C1_IDX                                  DL_TIMER_CC_1_INDEX
 
-/* Defines for PWM_0 */
-#define PWM_0_INST                                                         TIMA0
-#define PWM_0_INST_IRQHandler                                   TIMA0_IRQHandler
-#define PWM_0_INST_INT_IRQN                                     (TIMA0_INT_IRQn)
-#define PWM_0_INST_CLK_FREQ                                               100000
+/* Defines for PWM_Servo */
+#define PWM_Servo_INST                                                     TIMG8
+#define PWM_Servo_INST_IRQHandler                               TIMG8_IRQHandler
+#define PWM_Servo_INST_INT_IRQN                                 (TIMG8_INT_IRQn)
+#define PWM_Servo_INST_CLK_FREQ                                            50000
 /* GPIO defines for channel 0 */
-#define GPIO_PWM_0_C0_PORT                                                 GPIOB
-#define GPIO_PWM_0_C0_PIN                                          DL_GPIO_PIN_8
-#define GPIO_PWM_0_C0_IOMUX                                      (IOMUX_PINCM25)
-#define GPIO_PWM_0_C0_IOMUX_FUNC                     IOMUX_PINCM25_PF_TIMA0_CCP0
-#define GPIO_PWM_0_C0_IDX                                    DL_TIMER_CC_0_INDEX
-/* GPIO defines for channel 1 */
-#define GPIO_PWM_0_C1_PORT                                                 GPIOA
-#define GPIO_PWM_0_C1_PIN                                         DL_GPIO_PIN_22
-#define GPIO_PWM_0_C1_IOMUX                                      (IOMUX_PINCM47)
-#define GPIO_PWM_0_C1_IOMUX_FUNC                     IOMUX_PINCM47_PF_TIMA0_CCP1
-#define GPIO_PWM_0_C1_IDX                                    DL_TIMER_CC_1_INDEX
+#define GPIO_PWM_Servo_C0_PORT                                             GPIOA
+#define GPIO_PWM_Servo_C0_PIN                                     DL_GPIO_PIN_29
+#define GPIO_PWM_Servo_C0_IOMUX                                   (IOMUX_PINCM4)
+#define GPIO_PWM_Servo_C0_IOMUX_FUNC                  IOMUX_PINCM4_PF_TIMG8_CCP0
+#define GPIO_PWM_Servo_C0_IDX                                DL_TIMER_CC_0_INDEX
 
 
 
@@ -255,6 +249,42 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 /* Defines for BIN_2: GPIOB.22 with pinCMx 50 on package pin 21 */
 #define B_DIRECT_BIN_2_PIN                                      (DL_GPIO_PIN_22)
 #define B_DIRECT_BIN_2_IOMUX                                     (IOMUX_PINCM50)
+/* Port definition for Pin Group Mission */
+#define Mission_PORT                                                     (GPIOA)
+
+/* Defines for Mission_1: GPIOA.22 with pinCMx 47 on package pin 18 */
+#define Mission_Mission_1_PIN                                   (DL_GPIO_PIN_22)
+#define Mission_Mission_1_IOMUX                                  (IOMUX_PINCM47)
+/* Defines for Mission_2: GPIOA.28 with pinCMx 3 on package pin 35 */
+#define Mission_Mission_2_PIN                                   (DL_GPIO_PIN_28)
+#define Mission_Mission_2_IOMUX                                   (IOMUX_PINCM3)
+/* Port definition for Pin Group XJ_Read */
+#define XJ_Read_PORT                                                     (GPIOB)
+
+/* Defines for PIN_0: GPIOB.8 with pinCMx 25 on package pin 60 */
+#define XJ_Read_PIN_0_PIN                                        (DL_GPIO_PIN_8)
+#define XJ_Read_PIN_0_IOMUX                                      (IOMUX_PINCM25)
+/* Defines for PIN_1: GPIOB.9 with pinCMx 26 on package pin 61 */
+#define XJ_Read_PIN_1_PIN                                        (DL_GPIO_PIN_9)
+#define XJ_Read_PIN_1_IOMUX                                      (IOMUX_PINCM26)
+/* Defines for PIN_2: GPIOB.12 with pinCMx 29 on package pin 64 */
+#define XJ_Read_PIN_2_PIN                                       (DL_GPIO_PIN_12)
+#define XJ_Read_PIN_2_IOMUX                                      (IOMUX_PINCM29)
+/* Defines for PIN_3: GPIOB.13 with pinCMx 30 on package pin 1 */
+#define XJ_Read_PIN_3_PIN                                       (DL_GPIO_PIN_13)
+#define XJ_Read_PIN_3_IOMUX                                      (IOMUX_PINCM30)
+/* Defines for PIN_4: GPIOB.0 with pinCMx 12 on package pin 47 */
+#define XJ_Read_PIN_4_PIN                                        (DL_GPIO_PIN_0)
+#define XJ_Read_PIN_4_IOMUX                                      (IOMUX_PINCM12)
+/* Defines for PIN_5: GPIOB.1 with pinCMx 13 on package pin 48 */
+#define XJ_Read_PIN_5_PIN                                        (DL_GPIO_PIN_1)
+#define XJ_Read_PIN_5_IOMUX                                      (IOMUX_PINCM13)
+/* Defines for PIN_6: GPIOB.2 with pinCMx 15 on package pin 50 */
+#define XJ_Read_PIN_6_PIN                                        (DL_GPIO_PIN_2)
+#define XJ_Read_PIN_6_IOMUX                                      (IOMUX_PINCM15)
+/* Defines for PIN_7: GPIOB.3 with pinCMx 16 on package pin 51 */
+#define XJ_Read_PIN_7_PIN                                        (DL_GPIO_PIN_3)
+#define XJ_Read_PIN_7_IOMUX                                      (IOMUX_PINCM16)
 
 
 /* clang-format on */
@@ -266,7 +296,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 void SYSCFG_DL_PWM_A_B_init(void);
-void SYSCFG_DL_PWM_0_init(void);
+void SYSCFG_DL_PWM_Servo_init(void);
 void SYSCFG_DL_CAP_A_init(void);
 void SYSCFG_DL_CAP_B_init(void);
 void SYSCFG_DL_CAP_B_B_init(void);

@@ -83,7 +83,7 @@ void Encoder_Update(Enc_ID id)
     float dt = (now - ch->t_last) / 1000.0f;
     if (dt < 0.01f) return;
     int32_t d = ch->pulse - ch->last_pulse;
-    ch->rpm = ((float)d / ENCODER_PPR) * 60.0f / dt;
+    ch->rpm = ((float)d / (ENCODER_PPR*2)) * 60.0f / dt;   /* 2x边沿, 530/转 */
     ch->last_pulse = ch->pulse;
     ch->t_last = now;
     ch->running = (d != 0);

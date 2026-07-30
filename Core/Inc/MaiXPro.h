@@ -43,6 +43,10 @@ uint16_t Maix_ReadLine(char *buf, uint16_t maxLen);
 /** 处理收到的命令：PING→PONG, READY→ACK, 其他→Echo */
 void Maix_Process(void);
 
+/** 球位置: px, +右 -左, 调用后清除新帧标志 */
+int16_t Maix_BallPx(void);
+bool    Maix_BallNew(void);
+
 /** 非阻塞检查：有完整行则处理并返回 true */
 bool Maix_Poll(void);
 

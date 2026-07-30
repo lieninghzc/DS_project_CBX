@@ -19,6 +19,8 @@
 #define RX_BUF_SIZE 128
 static char g_rx_buf[RX_BUF_SIZE];
 static uint8_t g_rx_idx = 0;
+static int16_t g_ball_px = 0;
+static bool    g_ball_new = false;
 
 /* ================================================================ */
 void Maix_Init (void)
@@ -99,18 +101,19 @@ void Maix_Process (void)
         g_rx_buf[g_rx_idx] = '\0';
         g_rx_idx = 0;
 
-        if (strcmp(g_rx_buf, "PING") == 0)
+        /* 球位置: {lr},{dist}\n   lr=1右/0左, dist=像素 */
         {
-            Maix_SendLine("PONG");
-        }
-        else if (strcmp(g_rx_buf, "READY") == 0)
-        {
-            Maix_SendLine("ACK");
-        }
-        else
-        {
-            /* Echo: 原样返回 */
-            Maix_SendLine(g_rx_buf);
+            int lr=0, dist=0;
+            char *p = g_rx_buf;
+            while (*p >= '0' && *p <= '9') { lr = lr*10 + (*p-'0'); p++; }
+            if (*p == ',') {
+                p++;
+                while (*p >= '0' && *p <= '9') { dist = dist*10 + (*p-'0'); p++; }
+                g_ball_px = (lr ? dist : -dist);
+                g_ball_new = 1;
+            } else if (strcmp(g_rx_buf, "PING") == 0) { Maix_SendLine("PONG"); }
+            else if (strcmp(g_rx_buf, "READY") == 0) { Maix_SendLine("ACK"); }
+            else { Maix_Send("??"); Maix_SendLine(g_rx_buf); }  /* Echo+debug */
         }
     }
     /* 跳过 \r */
@@ -149,3 +152,6 @@ bool Maix_Poll (void)
     }
     return handled;
 }
+
+int16_t Maix_BallPx(void) { g_ball_new = false; return g_ball_px; }
+bool Maix_BallNew(void)   { return g_ball_new; }

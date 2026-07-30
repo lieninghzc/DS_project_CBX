@@ -199,17 +199,18 @@ PWM2.clockPrescale                      = 100;
 PWM2.ccIndex                            = [0];
 PWM2.$name                              = "PWM_Servo";
 PWM2.PWM_CHANNEL_0.$name                = "ti_driverlib_pwm_PWMTimerCC2";
-PWM2.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric12";
 PWM2.ccp0PinConfig.direction            = scripting.forceWrite("OUTPUT");
 PWM2.ccp0PinConfig.hideOutputInversion  = scripting.forceWrite(false);
 PWM2.ccp0PinConfig.onlyInternalResistor = scripting.forceWrite(false);
 PWM2.ccp0PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+PWM2.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric12";
 PWM2.peripheral.ccp0Pin.$assign         = "PA29";
 
 SYSCTL.clockTreeEn     = true;
 SYSCTL.useHFCLK_Manual = true;
 
 UART1.$name             = "UART_0";
+UART1.targetBaudRate    = 115200;
 UART1.txPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric2";
 UART1.rxPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric3";
 

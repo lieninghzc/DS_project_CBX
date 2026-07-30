@@ -8,7 +8,8 @@
 #include <stdbool.h>
 
 void XL_Init (void);
-void XL_Start (void); /* 直入RUN, 不等MISSION_1 */
+void XL_Start (void);
+void XL_Reset(void);  /* 任务结束清全部残留 */
 void XL_Update_AToA (void);  /* A→A 计时绕圈 */
 void XL_Update_AToAS (void); /* A→A 绕圈+控球 */
 void XL_Update_AToB (void);

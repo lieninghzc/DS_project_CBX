@@ -132,22 +132,9 @@ uint16_t BT_ReadLine(char *buf, uint16_t maxLen)
 }
 
 /* ================================================================
- * 发送 AT 指令并打印响应（调试用）
- * 同时把响应输出到 RTT 方便 Ozone 查看
+ * 任务通知: 0=无任务 1=ATOA 2=ASTATIC 3=ATOB 4=ATOAS
  * ================================================================ */
-void BT_SendAT(const char *cmd)
+void BT_SendTask(uint8_t id)
 {
-    printf("[BT] TX: %s\n", cmd);
-    BT_SendStr(cmd);
-    BT_SendStr("\r\n");
-
-    /* 等响应 */
-    delay_ms(200);
-
-    printf("[BT] RX: ");
-    while (BT_Available()) {
-        uint8_t ch = BT_ReadByte();
-        printf("%c", ch);
-    }
-    printf("\n");
+    BT_SendByte(id);
 }

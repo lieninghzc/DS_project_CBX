@@ -42,7 +42,7 @@ uint8_t BT_ReadByte(void);
 /** 读取一行（以 \\n 结束），maxLen 含结尾 \\0。返回实际读取的字节数 */
 uint16_t BT_ReadLine(char *buf, uint16_t maxLen);
 
-/** 发送 AT 指令并等待响应（调试用）*/
-void BT_SendAT(const char *cmd);
+/** 任务通知: 0=无 1=ATOA 2=ASTATIC 3=ATOB 4=ATOAS */
+void BT_SendTask(uint8_t id);
 
-#endif /* BLUETOOTH_H */
+#endif

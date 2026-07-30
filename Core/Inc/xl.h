@@ -11,7 +11,8 @@ void XL_Init (void);
 void XL_Start (void); /* 直入RUN, 不等MISSION_1 */
 void XL_Update_AToA (void);  /* A→A 计时绕圈 */
 void XL_Update_AToAS (void); /* A→A 绕圈+控球 */
-void XL_Update_AToB (void);  /* A→B 计时 */
+void XL_Update_AToB (void);
+extern bool g_atob_done;
 
 bool XL_IsCross (void);
 bool XL_IsLost (void);

@@ -22,6 +22,7 @@ bool XL_IsOnLine (void);
 int8_t XL_LastSide (void);
 uint8_t XL_GetSensors (void);
 int XL_GetState (void);
-int XL_GetMission (void); /* 到达A点次数 */
+int XL_GetMission (void);
+int32_t XL_GetPulse0(void);  /* 任务开始脉冲基线 */
 
 #endif

@@ -51,7 +51,7 @@ int main (void)
 
     static uint32_t g_next = 0;
     while (1)
-    {  //
+    {  //1
         if (g_msTick >= g_next)
         {
             g_next = g_msTick + 20;
